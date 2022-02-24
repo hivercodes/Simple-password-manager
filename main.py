@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import random
 
 
@@ -35,10 +36,20 @@ def pass_gen():
 
 
 def write_info():
-    with open("password.txt", "a") as file:
-        file.write(f"{website_text_field.get()} | {user_name_field.get()} | {password_field.get()}\n")
-        website_text_field.delete(0, END)
-        password_field.delete(0, END)
+
+    website = website_text_field.get()
+    user_name = user_name_field.get()
+    password = password_field.get()
+    window.clipboard_append(password)
+
+    is_ok = messagebox.askokcancel(title=website, message=f"Details entered:\nUser: {user_name}\n "
+                                                  f"Password:{password}\n Is that ok to save?")
+
+    if is_ok:
+        with open("password.txt", "a") as file:
+            file.write(f"{website} | {user_name} | {password}\n")
+            website_text_field.delete(0, END)
+            password_field.delete(0, END)
 
 
 
@@ -53,6 +64,7 @@ lock = PhotoImage(file="logo.png")
 canvas = Canvas(width=200, height=200, highlightthickness=0)
 canvas.create_image(100,100, image=lock)
 canvas.grid(column=1, row=0)
+
 
 website_text = Label(text="Website:")
 website_text.grid(column=0, row=1)
@@ -78,6 +90,7 @@ password_button.grid(column=2, row=3)
 
 add_button = Button(text="Add", width=35, command=write_info)
 add_button.grid(column=1, row=4, columnspan=2)
+
 
 
 
