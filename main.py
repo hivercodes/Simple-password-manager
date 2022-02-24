@@ -42,14 +42,23 @@ def write_info():
     password = password_field.get()
     window.clipboard_append(password)
 
-    is_ok = messagebox.askokcancel(title=website, message=f"Details entered:\nUser: {user_name}\n "
-                                                  f"Password:{password}\n Is that ok to save?")
+    if website == "" or user_name == "" or password == "":
+        messagebox.showinfo(title="Missing information", message="One or more of the boxes of information is empty")
 
-    if is_ok:
-        with open("password.txt", "a") as file:
-            file.write(f"{website} | {user_name} | {password}\n")
-            website_text_field.delete(0, END)
-            password_field.delete(0, END)
+
+
+    else:
+
+
+        is_ok = messagebox.askokcancel(title=website, message=f"Details entered:\nUser: {user_name}\n "
+                                                      f"Password:{password}\n "
+                                                      f"Is that ok to save?")
+        if is_ok:
+        
+            with open("password.txt", "a") as file:
+                file.write(f"{website} | {user_name} | {password}\n")
+                website_text_field.delete(0, END)
+                password_field.delete(0, END)
 
 
 
