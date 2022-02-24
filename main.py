@@ -1,8 +1,35 @@
 from tkinter import *
-
+import random
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+
+def pass_gen():
+    password_field.delete(0, END)
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
+
+    password_list = []
+
+    for char in range(nr_letters):
+        password_list.append(random.choice(letters))
+
+    for char in range(nr_symbols):
+        password_list += random.choice(symbols)
+
+    for char in range(nr_numbers):
+        password_list += random.choice(numbers)
+
+    random.shuffle(password_list)
+
+    password = ""
+    for char in password_list:
+        password += char
+    password_field.insert(0, password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -46,7 +73,7 @@ password_text.grid(column=0, row=3)
 password_field = Entry(width=22)
 password_field.grid(column=1, row=3)
 
-password_button = Button(text="Password")
+password_button = Button(text="Password", command=pass_gen)
 password_button.grid(column=2, row=3)
 
 add_button = Button(text="Add", width=35, command=write_info)
