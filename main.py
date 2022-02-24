@@ -54,7 +54,7 @@ def write_info():
                                                       f"Password:{password}\n "
                                                       f"Is that ok to save?")
         if is_ok:
-        
+
             with open("password.txt", "a") as file:
                 file.write(f"{website} | {user_name} | {password}\n")
                 website_text_field.delete(0, END)
