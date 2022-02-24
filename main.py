@@ -6,6 +6,15 @@ from tkinter import *
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
+
+def write_info():
+    with open("password.txt", "a") as file:
+        file.write(f"{website_text_field.get()} | {user_name_field.get()} | {password_field.get()}\n")
+        website_text_field.delete(0, END)
+        password_field.delete(0, END)
+
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 
@@ -29,6 +38,7 @@ user_name_text.grid(column=0, row=2)
 
 user_name_field = Entry(width=35)
 user_name_field.grid(column=1, row=2, columnspan=2)
+user_name_field.insert(0, "example@example.com")
 
 password_text = Label(text="Password:")
 password_text.grid(column=0, row=3)
@@ -39,7 +49,7 @@ password_field.grid(column=1, row=3)
 password_button = Button(text="Password")
 password_button.grid(column=2, row=3)
 
-add_button = Button(text="Add", width=35)
+add_button = Button(text="Add", width=35, command=write_info)
 add_button.grid(column=1, row=4, columnspan=2)
 
 
