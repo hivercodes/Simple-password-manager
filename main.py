@@ -1,6 +1,8 @@
+import json
 from tkinter import *
 from tkinter import messagebox
 import random
+import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -41,26 +43,35 @@ def write_info():
     user_name = user_name_field.get()
     password = password_field.get()
     window.clipboard_append(password)
+    new_data = {
+        website: {
+        "website": website,
+        "password": password,
+    }
+    }
 
     if website == "" or user_name == "" or password == "":
         messagebox.showinfo(title="Missing information", message="One or more of the boxes of information is empty")
-
-
-
     else:
+        try:
+            with open("password.json", "r") as file:
 
-
-        is_ok = messagebox.askokcancel(title=website, message=f"Details entered:\nUser: {user_name}\n "
-                                                      f"Password:{password}\n "
-                                                      f"Is that ok to save?")
-        if is_ok:
-
-            with open("password.txt", "a") as file:
-                file.write(f"{website} | {user_name} | {password}\n")
+                data = json.load(file)
+                data.update(new_data)
+            with open("password.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
                 website_text_field.delete(0, END)
                 password_field.delete(0, END)
-
-
+        except json.decoder.JSONDecodeError:
+            with open("password.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+                website_text_field.delete(0, END)
+                password_field.delete(0, END)
+        except FileNotFoundError:
+            with open("password.json", "w") as file:
+                json.dump(new_data, file, indent=4)
+                website_text_field.delete(0, END)
+                password_field.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
