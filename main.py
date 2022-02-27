@@ -45,7 +45,7 @@ def write_info():
     window.clipboard_append(password)
     new_data = {
         website: {
-        "website": website,
+        "username": user_name,
         "password": password,
     }
     }
@@ -73,8 +73,35 @@ def write_info():
                 website_text_field.delete(0, END)
                 password_field.delete(0, END)
 
-# ---------------------------- UI SETUP ------------------------------- #
+# ---------------------------- Search ------------------------------- #
 
+
+def search():
+    website = website_text_field.get()
+    try:
+        with open("password.json", "r") as file:
+            data = json.load(file)
+            if website in data:
+                for key in data:
+                    if key.lower() == website.lower():
+                        sub_dict = data[key]
+                        user = sub_dict["username"]
+                        pw = sub_dict["password"]
+                        messagebox.showinfo(title="Search Result",
+                                            message=f"{key} has the login information:\n"
+                                                    f"username: {user}\n"
+                                                    f"password: {pw}")
+            else:
+                messagebox.showinfo(title="Search Result",
+                                    message=f"Unknown website")
+    except json.decoder.JSONDecodeError:
+        messagebox.showinfo(title="Search Result",
+                            message=f"Empty database")
+    except FileNotFoundError:
+        messagebox.showinfo(title="Search Result",
+                            message=f"Empty database")
+
+# ---------------------------- UI SETUP ------------------------------- #
 
 
 window = Tk()
@@ -111,6 +138,8 @@ password_button.grid(column=2, row=3)
 add_button = Button(text="Add", width=35, command=write_info)
 add_button.grid(column=1, row=4, columnspan=2)
 
+search_button = Button(text="Search", command=search)
+search_button.grid(column=2, row=1)
 
 
 
